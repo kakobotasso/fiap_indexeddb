@@ -1,0 +1,89 @@
+<DOCTYPE html>
+<html>
+  <head>
+      <title>Interessados</title>
+      <meta charset="utf-8" />
+      <link rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <link rel="stylesheet" href="css/estilos.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">
+      </script>
+  </head>
+
+    <body>
+      <div class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+              <div class="navbar-header">
+                  <button type="button" class="navbar-toggle" data-toggle="collapse"
+                          data-target=".navbar-collapse">
+                      <span class="icon-bar"></span> <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="#">Fiap MOB</a>
+              </div>
+              <div class="navbar-collapse collapse">
+                  <ul class="nav navbar-nav">
+                      <li><a href="index.html">Cursos</a></li>
+                      <li><a href="index.html">Inscrição</a></li>
+                      <li><a href="interessados.html">Interessados</a></li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+
+      <section id="listaInteressados">
+        <div class="row separator">
+          <div class="col-md-2"></div>
+          <div class="col-md-8 ">
+            <a href="#" onclick="carregarInteressados()" id="btInteressados" class="btn btn-info">Mostrar interessados</a>
+          </div>
+        </div>
+
+        <div id="contentInteressados">
+        </div>
+      </section>
+
+
+
+        <script src="js/cursos.js"></script>
+        <script src="js/db.js"></script>
+        <script type="text/javascript">
+          fiapDB.open();
+
+          function htmlInteressado(nome, email, curso){
+            var _html = "";
+            _html += "<div class='row'>";
+            _html += "  <div class='col-md-2'></div>";
+            _html += "  <div class='col-md-8'>";
+            _html += "    <p class='separator'>";
+            _html += "      "+ nome +" <br />";
+            _html += "      "+ email +" <br />";
+            _html += "      " + curso + " ";
+            _html += "    </p>";
+            _html += "  </div>";
+            _html += "</div>";
+
+            return _html;
+          }
+
+          function carregarInteressados(){
+            fiapDB.fetchInteressados(function(interessados){
+              var retorno = "";
+
+              for(var i = 0; i < interessados.length; i++){
+                var nome = interessados[i]["nome"];
+                var email = interessados[i]["email"];
+                var curso = nomeCurso(interessados[i]["curso"]);
+
+                retorno += htmlInteressado(nome, email, curso);
+              }
+
+              document.getElementById("contentInteressados").innerHTML = retorno;
+              document.getElementById("btInteressados").innerHTML = "Atualizar interessados"
+            })
+          }
+
+        </script>
+    </body>
+</html>
